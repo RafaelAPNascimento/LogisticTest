@@ -16,12 +16,6 @@ tags:
     externalDocs:
       description: "Find out more"
       url: "http://swagger.io"
-  - name: "Clients"
-  - name: "Routes"
-    description: "Operations about route"
-    externalDocs:
-      description: "Find out more about our store"
-      url: "http://swagger.io"
 schemes:
   - "https"
   - "http"
@@ -230,6 +224,8 @@ paths:
       tags:
         - "Orders"
       summary: "Create new Order"
+      description: "The initial state of a newly created order is always RECEIVING.
+      \nUse the service update order status to step forward the order state."
       operationId: "createOrder"
       produces:
         - "application/json"
@@ -257,7 +253,12 @@ paths:
     put:
       tags:
         - "Orders"
-      summary: "Update order status"
+      summary: "Steps forward the order status"
+      description: "Updates the order state to the next one:
+      \nRECEIVING -> PREPARING
+      \nPREPARING -> READY
+      \nPICKED -> DELIVERED
+      \n\nIf the order is not in RECEIVING, PREPARING or PICKED state, this request has no effect and returns 422"
       operationId: "updateOrder"
       consumes:
         - "application/json"
@@ -277,6 +278,8 @@ paths:
           description: "Unauthorized"
         "405":
           description: "Invalid input"
+        "422":
+          description: "Unprocessable entity"
         "500":
           description: "Internal server error"
 
@@ -345,8 +348,8 @@ paths:
     get:
       tags:
         - "Routes"
-      summary: "Get routes"
-      description: "Returns only orders with READY status. This result is provisory as more orders may entry in READY status, the routes may change to be optimized.
+      summary: "Suggested routes for all orders in READY status"
+      description: "Returns the best routes for orders with READY status. This result is provisory as more orders may entry in READY status, the routes may change to be optimized.
         \n\nTo confirm a specific route by id call the endpoint for route confirmation. Once a route is confirmed, all its orders change the status from READY to PICKED and time starts to run.
         \n\nAll orders in a single route must belong to the same restaurant.
         \n\nAt most 3 orders by route."
@@ -389,13 +392,15 @@ paths:
         "200":
           description: "OK"
           schema:
-            $ref: "#/definitions/Routes"
+            $ref: "#/definitions/Route"
         "400":
           description: "Bad request"
         "401":
           description: "Unauthorized"
         "405":
           description: "Invalid input"
+        "422":
+          description: "Unprocessable Entity. Id not found"
         "500":
           description: "Internal server error"
 
@@ -529,9 +534,3 @@ definitions:
 
   Orders:
     type: integer
-
-
-
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
