@@ -1,21 +1,16 @@
 swagger: "2.0"
 info:
-  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  description: "This is a sample server Logistic API."
   version: "1.0.0"
   title: "LOL Foods API"
   termsOfService: "http://swagger.io/terms/"
   contact:
-    email: "apiteam@swagger.io"
+    email: "rafael.sjp17@gmail.com"
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
-tags:
-  - name: "Restaurants"
-    externalDocs:
-      description: "Find out more"
-      url: "http://swagger.io"
+host: "logistic-app"
+basePath: "/api"
 schemes:
   - "https"
   - "http"
@@ -225,7 +220,8 @@ paths:
         - "Orders"
       summary: "Create new Order"
       description: "The initial state of a newly created order is always RECEIVING.
-      \nUse the service 'update order status' to step forward the order state."
+      \nUse the service 'update order status' to step forward the order state.
+      The due time is set imediately based on the client location."
       operationId: "createOrder"
       produces:
         - "application/json"
@@ -349,7 +345,7 @@ paths:
       tags:
         - "Routes"
       summary: "Suggested routes for all orders in READY status"
-      description: "Returns the best routes for orders with READY status. This result is provisory as more orders may entry in READY status, the routes may change to be optimized.
+      description: "Returns the best routes for orders with READY status. This result is provisory as more orders may entry in READY status, then the set of routes are updated.
         \n\nTo confirm a specific route by id, call the endpoint for route confirmation. Once a route is confirmed, all its orders change the status from READY to PICKED and time starts to run.
         \n\nAll orders in a single route must belong to the same restaurant.
         \n\nAt most 3 orders by route."
@@ -376,7 +372,7 @@ paths:
       tags:
         - "Routes"
       summary: "Route Confirmation"
-      description: "The route under provided ID is confirmed, then all its orders go to the PICKED state and the order attribute 'pickup' and 'dueTime' are set by the system"
+      description: "The route under provided ID is confirmed, then all its orders go to the PICKED state"
       operationId: "confirmRoute"
       parameters:
         - in: "body"
