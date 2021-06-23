@@ -1,7 +1,7 @@
 package br.com.lolfood.integration;
 
 import br.com.lolfood.annotations.IntegrationTest;
-import br.com.lolfood.model.Restaurant;
+import br.com.lolfood.model.Client;
 import br.com.lolfood.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
@@ -13,20 +13,20 @@ import static org.apache.http.HttpStatus.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class RestaurantTest {
+public class ClientTest {
 
-    private String PATH = "/restaurant";
+    private String PATH = "/client";
 
     @IntegrationTest
     public void shouldCreate() {
 
-        Restaurant restaurant = TestUtil.getRestaurant();
+        Client client = TestUtil.getClient();
 
         given().baseUri(BASE_URI)
                 .basePath(PATH)
                 .contentType(JSON)
                 .request()
-                .body(restaurant)
+                .body(client)
                 .log().all()
                 .when().post()
                 .then()
@@ -37,12 +37,13 @@ public class RestaurantTest {
     @IntegrationTest
     public void shouldUpdate() {
 
-        Restaurant restaurant = TestUtil.getRestaurant();
+        Client client = TestUtil.getClient();
+
         given().baseUri(BASE_URI)
                 .basePath(PATH)
                 .contentType(JSON)
                 .request()
-                .body(restaurant)
+                .body(client)
                 .log().all()
                 .when().put()
                 .then()
@@ -56,32 +57,32 @@ public class RestaurantTest {
 
         Long id = 5L;
 
-        Restaurant restaurant =
-            given().baseUri(BASE_URI)
-                .basePath(PATH + "/{id}")
-                .pathParam("id", id)
-                .request()
-                .log().all()
-                .when().get()
-                .then()
-                .log().all()
-                .assertThat().statusCode(SC_OK)
-                .extract().response().as(Restaurant.class);
+        Client client =
+                given().baseUri(BASE_URI)
+                        .basePath(PATH + "/{id}")
+                        .pathParam("id", id)
+                        .request()
+                        .log().all()
+                        .when().get()
+                        .then()
+                        .log().all()
+                        .assertThat().statusCode(SC_OK)
+                        .extract().response().as(Client.class);
 
-        assertNotNull(restaurant);
+        assertNotNull(client);
     }
 
     @IntegrationTest
     public void shouldNotAcceptInvalidPayload() {
 
-        Restaurant restaurant = TestUtil.getRestaurant();
-        restaurant.setLat(null);
+        Client client = TestUtil.getClient();
+        client.setLat(null);
 
         given().baseUri(BASE_URI)
                 .basePath(PATH)
                 .contentType(JSON)
                 .request()
-                .body(restaurant)
+                .body(client)
                 .log().all()
                 .when().put()
                 .then()

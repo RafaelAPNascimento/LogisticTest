@@ -11,13 +11,18 @@ import org.hibernate.validator.constraints.Range;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Client {
+public class Order {
 
-    @NotNull
-    @Range(min = 1)
+    @NotNull @Range(min = 1)
     private Long id;
-    @NotNull
-    private Double lat;
-    @NotNull
-    private Double lon;
+    @NotNull @Range(min = 1)
+    private Long restaurant;
+    @NotNull @Range(min = 1)
+    private Long client;
+
+    private String pickup;
+
+    private String delivered;
+
+    private OrderStatus status;
 }

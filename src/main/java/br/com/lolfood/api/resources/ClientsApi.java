@@ -1,30 +1,36 @@
 package br.com.lolfood.api.resources;
 
-import br.com.lolfood.model.Restaurant;
+import br.com.lolfood.model.Client;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.hibernate.validator.constraints.Range;
+import org.jboss.logging.Logger;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.CREATED;
 import static jakarta.ws.rs.core.Response.Status.OK;
 
-@Path("/restaurant")
-public class RestaurantApiImpl {
+@Path("/client")
+public class ClientsApi {
+
+    private static final Logger LOG = Logger.getLogger(ClientsApi.class);
 
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response createRestaurant(@Valid Restaurant restaurant) {
+    public Response create(@Valid Client client) {
+
+        LOG.info("Create client: " + client);
         return Response.status(CREATED).build();
     }
 
     @PUT
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response updateRestaurant(@Valid Restaurant restaurant) {
+    public Response update(@Valid Client client) {
+
+        LOG.info("Update Client: " + client);
         return Response.status(OK).build();
     }
 
@@ -32,8 +38,10 @@ public class RestaurantApiImpl {
     @Path("/{id}")
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response getRestaurant(@Range(min = 1) @PathParam("id") Long id) {
-        Restaurant restaurant = Restaurant.builder().id(1L).lon(-96.25).lat(59.02).build();
-        return Response.ok(restaurant).build();
+    public Response get(@Range(min = 1) @PathParam("id") Long id) {
+
+        LOG.info("Get Client: " + id);
+        Client client = Client.builder().id(1L).lon(-96.25).lat(59.02).build();
+        return Response.ok(client).build();
     }
 }
