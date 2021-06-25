@@ -7,24 +7,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class Route {
 
-    @NotNull @Range(min = 1)
+    @NotNull
+    @Range(min = 1)
     private Long id;
-    @NotNull @Range(min = 1)
-    private Long restaurant;
-    @NotNull @Range(min = 1)
-    private Long client;
 
-    private String pickup;
+    private List<Long> orders;
 
-    private String dueTime;
-
-    private String delivered;
-
-    private OrderStatus status;
+    private boolean confirmed;
 }
