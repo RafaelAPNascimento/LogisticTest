@@ -1,6 +1,8 @@
 package br.com.lolfood.api.resources;
 
 import br.com.lolfood.model.Restaurant;
+import br.com.lolfood.service.RestaurantService;
+import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -16,13 +18,22 @@ public class RestaurantsApi {
 
     private static final Logger LOG = Logger.getLogger(RestaurantsApi.class);
 
+    @Inject
+    private RestaurantService service;
+
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response createRestaurant(@Valid Restaurant restaurant) {
 
         LOG.info("create restaurant: " + restaurant);
-        return Response.status(CREATED).build();
+        try {
+            service.create(restaurant);
+            return Response.status(CREATED).build();
+        }
+        catch (Exception e) {
+            return Response.status(500, e.getMessage()).build();
+        }
     }
 
     @PUT

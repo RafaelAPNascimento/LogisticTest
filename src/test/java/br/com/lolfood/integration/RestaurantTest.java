@@ -88,4 +88,22 @@ public class RestaurantTest {
                 .log().all()
                 .assertThat().statusCode(SC_BAD_REQUEST);
     }
+
+    @IntegrationTest
+    public void shouldNotAcceptInvalidId() {
+
+        Restaurant restaurant = TestUtil.getRestaurant();
+        restaurant.setId(-1L);
+
+        given().baseUri(BASE_URI)
+                .basePath(PATH)
+                .contentType(JSON)
+                .request()
+                .body(restaurant)
+                .log().all()
+                .when().put()
+                .then()
+                .log().all()
+                .assertThat().statusCode(SC_BAD_REQUEST);
+    }
 }
