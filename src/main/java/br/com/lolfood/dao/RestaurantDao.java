@@ -1,5 +1,7 @@
 package br.com.lolfood.dao;
 
-public interface RestaurantDao<Restaurant> extends GenericDao<Restaurant> {
+import br.com.lolfood.model.Restaurant;
+
+public interface RestaurantDao<T> extends GenericDao<T> {
 
 }

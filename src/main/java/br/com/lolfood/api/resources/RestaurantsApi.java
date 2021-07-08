@@ -1,5 +1,6 @@
 package br.com.lolfood.api.resources;
 
+import br.com.lolfood.exception.BusinessException;
 import br.com.lolfood.model.Restaurant;
 import br.com.lolfood.service.RestaurantService;
 import jakarta.inject.Inject;
@@ -10,8 +11,7 @@ import org.hibernate.validator.constraints.Range;
 import org.jboss.logging.Logger;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static jakarta.ws.rs.core.Response.Status.CREATED;
-import static jakarta.ws.rs.core.Response.Status.OK;
+import static jakarta.ws.rs.core.Response.Status.*;
 
 @Path("/restaurant")
 public class RestaurantsApi {
@@ -42,7 +42,16 @@ public class RestaurantsApi {
     public Response updateRestaurant(@Valid Restaurant restaurant) {
 
         LOG.info("Update Restaurant: " + restaurant);
-        return Response.status(OK).build();
+        try {
+            service.update(restaurant);
+            return Response.ok().build();
+        }
+        catch (BusinessException e) {
+            return Response.status(e.getCode()).build();
+        }
+        catch (Exception e) {
+            return Response.status(500, e.getMessage()).build();
+        }
     }
 
     @GET
@@ -52,7 +61,17 @@ public class RestaurantsApi {
     public Response getRestaurant(@Range(min = 1) @PathParam("id") Long id) {
 
         LOG.info("get Restaurant: " + id);
-        Restaurant restaurant = Restaurant.builder().id(1L).lon(-96.25).lat(59.02).build();
-        return Response.ok(restaurant).build();
+        try {
+            Restaurant restaurant = service.find(id);
+            LOG.info("===== found: "+restaurant);
+            if (restaurant != null)
+                return Response.ok(restaurant).build();
+            else
+                return Response.status(404).build();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(500, e.getMessage()).build();
+        }
     }
 }
