@@ -63,11 +63,10 @@ public class RestaurantsApi {
         LOG.info("get Restaurant: " + id);
         try {
             Restaurant restaurant = service.find(id);
-            LOG.info("===== found: "+restaurant);
             if (restaurant != null)
                 return Response.ok(restaurant).build();
             else
-                return Response.status(404).build();
+                return Response.status(NO_CONTENT).build();
         }
         catch (Exception e) {
             e.printStackTrace();

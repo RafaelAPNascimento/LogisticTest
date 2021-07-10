@@ -1,6 +1,9 @@
 package br.com.lolfood.api.resources;
 
 import br.com.lolfood.model.Order;
+import br.com.lolfood.service.OrderService;
+import br.com.lolfood.util.ApiResponseErrorUtil;
+import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -8,7 +11,6 @@ import org.hibernate.validator.constraints.Range;
 import org.jboss.logging.Logger;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static jakarta.ws.rs.core.Response.Status.CREATED;
 import static jakarta.ws.rs.core.Response.Status.OK;
 
 @Path("/order")
@@ -16,13 +18,22 @@ public class OrdersApi {
 
     private static final Logger LOG = Logger.getLogger(OrdersApi.class);
 
+    @Inject
+    private OrderService service;
+
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     public Response create(@Valid Order order) {
 
         LOG.info("create order: " + order);
-        return Response.status(CREATED).build();
+        try {
+            service.createOrder(order);
+            return null;
+        }
+        catch (Exception e) {
+            return ApiResponseErrorUtil.handle(e);
+        }
     }
 
     @PUT

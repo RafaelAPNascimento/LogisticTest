@@ -88,7 +88,7 @@ public class RestaurantTest {
                 .when().get()
                 .then()
                 .log().all()
-                .assertThat().statusCode(SC_NOT_FOUND);
+                .assertThat().statusCode(SC_NO_CONTENT);
     }
 
     @IntegrationTest
