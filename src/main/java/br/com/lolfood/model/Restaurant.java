@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Range;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Restaurant {
+public class Restaurant implements Position {
 
     @NotNull @Range(min = 1)
     private Long id;
@@ -19,4 +19,5 @@ public class Restaurant {
     private Double lat;
     @NotNull
     private Double lon;
+
 }

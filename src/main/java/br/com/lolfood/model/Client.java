@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Range;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Client {
+public class Client implements Position {
 
     @NotNull
     @Range(min = 1)
