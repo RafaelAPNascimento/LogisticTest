@@ -1,5 +1,7 @@
 package br.com.lolfood.exception;
 
+import java.util.Objects;
+
 public class BusinessException extends RuntimeException {
 
     private String message;
@@ -7,6 +9,7 @@ public class BusinessException extends RuntimeException {
 
     public BusinessException(String message, int code) {
         super(message);
+        Objects.requireNonNull(code, "Code can not be null");
         this.message = message;
         this.code = code;
     }

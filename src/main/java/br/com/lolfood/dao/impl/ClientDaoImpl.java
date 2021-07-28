@@ -13,7 +13,7 @@ public class ClientDaoImpl implements ClientDao<Client> {
     }
 
     @Override
-    public Client salvar(Client entity) {
+    public Client save(Client entity) {
         return Database.insertClient(entity);
     }
 

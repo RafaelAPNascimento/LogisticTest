@@ -13,7 +13,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void create(Client client) {
-        dao.salvar(client);
+        dao.save(client);
     }
 
     @Override

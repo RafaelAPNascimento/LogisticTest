@@ -1,5 +1,9 @@
 package br.com.lolfood.api.resources;
 
+import br.com.lolfood.model.Route;
+import br.com.lolfood.service.RouteService;
+import br.com.lolfood.util.ApiResponseErrorUtil;
+import jakarta.inject.Inject;
 import jakarta.validation.constraints.NotNull;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
@@ -13,11 +17,20 @@ public class RouteApi {
 
     private static final Logger LOG = Logger.getLogger(RouteApi.class);
 
+    @Inject
+    private RouteService routeService;
+
     @GET
     @Produces(APPLICATION_JSON)
     public Response get() {
         LOG.info("GET Orders");
-        return Response.ok().build();
+        try {
+            Route[] routes = routeService.getSuggestedRoutes();
+            return Response.ok(routes).build();
+        }
+        catch (Exception e) {
+            return ApiResponseErrorUtil.handle(e);
+        }
     }
 
     @PUT
@@ -29,6 +42,12 @@ public class RouteApi {
 
         LOG.info(String.format("Confirm Order Id [ %s ]", id));
 
-        return Response.ok().build();
+        try {
+            Route route = routeService.confirm(id);
+            return Response.ok(route).build();
+        }
+        catch (Exception e) {
+            return ApiResponseErrorUtil.handle(e);
+        }
     }
 }

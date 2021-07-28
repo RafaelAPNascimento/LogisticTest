@@ -13,7 +13,7 @@ public class RestaurantDaoImpl implements RestaurantDao<Restaurant> {
     }
 
     @Override
-    public Restaurant salvar(Restaurant entity) {
+    public Restaurant save(Restaurant entity) {
         return Database.insertRestaurant(entity);
     }
 

@@ -20,6 +20,6 @@ public final class CoordinatesUtil {
     }
 
     public static LocalDateTime calculateDueTime(Double distance) {
-        throw new RuntimeException("Not implemented yet");
+        return LocalDateTime.now();
     }
 }

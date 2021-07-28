@@ -4,7 +4,7 @@ public interface GenericDao<E> {
 
     E getById(Object id);
 
-    E salvar(E entity);
+    E save(E entity);
 
     E update(E entity);
 

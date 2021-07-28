@@ -10,6 +10,8 @@ import jakarta.ws.rs.core.Response;
 import org.hibernate.validator.constraints.Range;
 import org.jboss.logging.Logger;
 
+import java.util.List;
+
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static jakarta.ws.rs.core.Response.Status.OK;
 
@@ -29,7 +31,7 @@ public class OrdersApi {
         LOG.info("create order: " + order);
         try {
             service.createOrder(order);
-            return null;
+            return Response.status(201).build();
         }
         catch (Exception e) {
             return ApiResponseErrorUtil.handle(e);
@@ -42,7 +44,13 @@ public class OrdersApi {
     public Response update(@Valid String orderId) {
 
         LOG.info("Update Order ID: " + orderId);
-        return Response.status(OK).build();
+        try {
+            service.updateOrder(orderId);
+            return Response.status(OK).build();
+        }
+        catch (Exception e) {
+            return ApiResponseErrorUtil.handle(e);
+        }
     }
 
     @GET
@@ -51,7 +59,13 @@ public class OrdersApi {
     public Response getByRestaurant(@Range(min = 1) @QueryParam("restaurantId") Long id) {
 
         LOG.info("Find Orders by restaurante ID: " + id);
-        return Response.ok().build();
+        try {
+            List<Order> orders = service.getOrdersByRestaurant(id);
+            return Response.ok(orders).build();
+        }
+        catch (Exception e) {
+            return ApiResponseErrorUtil.handle(e);
+        }
     }
 
     @GET
@@ -61,6 +75,12 @@ public class OrdersApi {
     public Response getById(@Range(min = 1) @PathParam("id") Long id) {
 
         LOG.info("Get Order by ID: " + id);
-        return Response.ok().build();
+        try {
+            Order order = service.getOrder(id);
+            return Response.ok(order).build();
+        }
+        catch (Exception e) {
+            return ApiResponseErrorUtil.handle(e);
+        }
     }
 }

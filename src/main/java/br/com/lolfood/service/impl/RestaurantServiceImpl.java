@@ -13,7 +13,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public void create(Restaurant restaurant) {
-        dao.salvar(restaurant);
+        dao.save(restaurant);
     }
 
     @Override

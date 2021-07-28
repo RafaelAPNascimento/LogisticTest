@@ -1,7 +1,7 @@
 package br.com.lolfood.integration;
 
 import br.com.lolfood.annotations.IntegrationTest;
-import io.restassured.http.ContentType;
+import br.com.lolfood.model.Route;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 
@@ -16,26 +16,29 @@ public class RouteTest {
     private final String PATH = "/routes";
 
     @IntegrationTest
-    @DisplayName("Should get by ID")
+    @DisplayName("Should get suggested routes")
     public void shouldGet() {
 
-        given().baseUri(BASE_URI)
+        Route[] routes =
+            given().baseUri(BASE_URI)
                 .basePath(PATH)
                 .request()
                 .log().all()
                 .when().get()
                 .then()
                 .log().all()
-                .assertThat().statusCode(SC_OK);
+                .assertThat().statusCode(SC_OK)
+                .extract().response().as(Route[].class);
     }
 
     @IntegrationTest
-    @DisplayName("Should update status to the next one")
+    @DisplayName("Should confirm route")
     public void shouldUpdateStatus() {
 
         String routeId = "{\"id\": 3}";
 
-        given().baseUri(BASE_URI)
+        Route route =
+            given().baseUri(BASE_URI)
                 .basePath(PATH)
                 .contentType(JSON)
                 .request()
@@ -44,6 +47,7 @@ public class RouteTest {
                 .when().put()
                 .then()
                 .log().all()
-                .assertThat().statusCode(SC_OK);
+                .assertThat().statusCode(SC_OK)
+                .extract().response().as(Route.class);
     }
 }

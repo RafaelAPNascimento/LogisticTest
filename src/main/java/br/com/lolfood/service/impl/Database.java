@@ -6,7 +6,11 @@ import br.com.lolfood.model.Restaurant;
 import br.com.lolfood.model.Route;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 public final class Database {
 
@@ -21,6 +25,27 @@ public final class Database {
         orders = new HashMap<>();
         routes = new HashMap<>();
     }
+
+    public static Order insertOrder(Order order) {
+
+        if (orders.containsKey(order.getId()))
+            throw new RuntimeException(String.format("Order with id %s already exists", order.getId()));
+
+        return orders.put(order.getId(), order);
+    }
+
+    public static Order getOrder(Object id) {
+        return orders.get(id);
+    }
+
+    public static Order updateOrder(Order order) {
+
+        if (!orders.containsKey(order.getId()))
+            throw new RuntimeException(String.format("Unimpossible to update, Order id %s doesn't exist yet", order.getId()));
+
+        return orders.put(order.getId(), order);
+    }
+
 
     public static Restaurant insertRestaurant(Restaurant restaurant) {
 
@@ -68,5 +93,21 @@ public final class Database {
 
     public static Client getClient(Object id) {
         return clients.get(id);
+    }
+
+    public static void clear() {
+        restaurants.clear();
+        orders.clear();
+        clients.clear();
+        routes.clear();
+    }
+
+    public static List<Order> getOrdersByRestaurant(Long id) {
+
+        return
+            orders.values()
+                .stream()
+                .filter(order -> order.getRestaurant() == id)
+                .collect(toList());
     }
 }

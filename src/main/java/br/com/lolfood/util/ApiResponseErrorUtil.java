@@ -24,6 +24,9 @@ public class ApiResponseErrorUtil {
 
     private static Response handleBusinessException(BusinessException e) {
 
+        if (e.getMessage() == null)
+            return Response.status(e.getCode()).build();
+
         ResponseError error = ResponseError.builder().code(e.getCode()).message(e.getMessage()).build();
         return Response.serverError().entity(error).build();
     }
