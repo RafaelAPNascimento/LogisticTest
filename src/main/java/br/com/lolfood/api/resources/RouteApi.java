@@ -23,7 +23,7 @@ public class RouteApi {
     @GET
     @Produces(APPLICATION_JSON)
     public Response get() {
-        LOG.info("GET Orders");
+        LOG.info("GET Suggested Routes");
         try {
             Route[] routes = routeService.getSuggestedRoutes();
             return Response.ok(routes).build();
@@ -40,7 +40,7 @@ public class RouteApi {
 
         Long id = new JSONObject(orderId).getLong("id");;
 
-        LOG.info(String.format("Confirm Order Id [ %s ]", id));
+        LOG.info(String.format("Route Confirmation: route Id [ %s ]", id));
 
         try {
             Route route = routeService.confirm(id);

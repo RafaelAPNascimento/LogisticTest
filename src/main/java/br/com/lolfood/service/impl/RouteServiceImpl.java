@@ -12,6 +12,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Route[] getSuggestedRoutes() {
+                
         return new Route[0];
     }
 
